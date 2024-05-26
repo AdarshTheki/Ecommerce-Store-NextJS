@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react-hooks/exhaustive-deps */
 import Loader from '@/components/Loader';
 import ProductCard from '@/components/ProductCard';
 import { getProductDetails } from '@/lib/actions';
