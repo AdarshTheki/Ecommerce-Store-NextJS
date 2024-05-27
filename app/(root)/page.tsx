@@ -11,7 +11,7 @@ const Home = async () => {
     return (
         <>
             <Image
-                src={'/banner.png'}
+                src={'/banner.png' || '/placeholder.jpg'}
                 alt='banner'
                 width={2000}
                 height={1000}

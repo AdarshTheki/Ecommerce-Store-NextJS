@@ -13,7 +13,7 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
                         <Link href={`/collections/${collection._id}`} key={collection._id}>
                             <Image
                                 key={collection._id}
-                                src={collection.image}
+                                src={collection.image || '/placeholder.jpg'}
                                 alt={collection.title}
                                 width={350}
                                 height={200}

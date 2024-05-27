@@ -8,6 +8,18 @@ body,
     height: 100%;
 }
 
-.main-container {
-    padding: 0.5rem 1rem;
+.loadingContainer {
+    z-index: 999;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #f3096b67;
+}
+.loadingBar {
+    z-index: 999;
+    height: 100%;
+    background-color: #ff006a;
+    transition: width 0.5s ease-in-out;
 }

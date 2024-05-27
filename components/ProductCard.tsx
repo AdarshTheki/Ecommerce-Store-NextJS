@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -15,7 +17,7 @@ const ProductCard = ({ product, isLikedProduct, updateSignedInUser }: ProductCar
         <div className='w-[200px] flex flex-col gap-2'>
             <Link href={`/products/${product._id}`} className='hover:bg-slate-100'>
                 <Image
-                    src={product.media[0]}
+                    src={product?.media[0] || '/placeholder.jpg'}
                     alt='product'
                     width={250}
                     height={230}

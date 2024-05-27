@@ -19,7 +19,7 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
                 {productMedia?.map((image, index) => (
                     <Image
                         key={index}
-                        src={image}
+                        src={image || '/placeholder.jpg'}
                         height={200}
                         width={200}
                         alt='product'

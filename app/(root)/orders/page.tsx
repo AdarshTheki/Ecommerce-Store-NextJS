@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { getOrders } from '@/lib/actions';
 import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
@@ -28,10 +26,10 @@ const OrdersPage = async () => {
 
                         <div className='flex flex-col gap-5'>
                             {order.products.map((orderItem: OrderItemType) => (
-                                <div key={orderItem.product._id} className='flex gap-4'>
+                                <div key={orderItem?.product?._id} className='flex gap-4'>
                                     <Image
-                                        src={orderItem.product.media[0]}
-                                        alt={orderItem.product.title}
+                                        src={orderItem?.product?.media[0] || '/placeholder.jpg'}
+                                        alt={orderItem?.product?.title}
                                         width={100}
                                         height={100}
                                         className='w-32 h-32 object-contain rounded-lg'
@@ -40,35 +38,35 @@ const OrdersPage = async () => {
                                         <p className='text-small-medium'>
                                             Title:{' '}
                                             <span className='text-small-bold'>
-                                                {orderItem.product.title}
+                                                {orderItem?.product?.title}
                                             </span>
                                         </p>
-                                        {orderItem.color && (
+                                        {orderItem?.color && (
                                             <p className='text-small-medium'>
                                                 Color:{' '}
                                                 <span className='text-small-bold'>
-                                                    {orderItem.color}
+                                                    {orderItem?.color}
                                                 </span>
                                             </p>
                                         )}
-                                        {orderItem.size && (
+                                        {orderItem?.size && (
                                             <p className='text-small-medium'>
                                                 Size:{' '}
                                                 <span className='text-small-bold'>
-                                                    {orderItem.size}
+                                                    {orderItem?.size}
                                                 </span>
                                             </p>
                                         )}
                                         <p className='text-small-medium'>
                                             Unit price:{' '}
                                             <span className='text-small-bold'>
-                                                {orderItem.product.price}
+                                                {orderItem?.product?.price}
                                             </span>
                                         </p>
                                         <p className='text-small-medium'>
                                             Quantity:{' '}
                                             <span className='text-small-bold'>
-                                                {orderItem.quantity}
+                                                {orderItem?.quantity}
                                             </span>
                                         </p>
                                     </div>

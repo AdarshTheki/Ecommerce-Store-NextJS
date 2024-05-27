@@ -55,7 +55,7 @@ const CartPage = () => {
                         className='w-full flex max-sm:flex-col rounded-lg max-sm:gap-3 hover:bg-grey-3 px-4 py-3 items-center max-sm:items-start justify-between'>
                         <div className='flex items-center'>
                             <Image
-                                src={cartItem.item.media[0]}
+                                src={cartItem.item.media[0] || '/placeholder.jpg'}
                                 width={100}
                                 height={100}
                                 className='rounded-lg w-32 h-32 object-contain'
