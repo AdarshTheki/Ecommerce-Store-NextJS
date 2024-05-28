@@ -1,10 +1,15 @@
-import { getOrders } from '@/lib/actions';
 import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
 
 const OrdersPage = async () => {
     const { userId } = auth();
-    const orders = await getOrders(userId as string);
+
+    const getOrderCustomerDetail = async () => {
+        const orders = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/customers/${userId}`);
+        return await orders.json();
+    };
+
+    const orders = await getOrderCustomerDetail();
 
     // console.log(orders[0].products)
 
