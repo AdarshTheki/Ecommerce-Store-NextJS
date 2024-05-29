@@ -14,14 +14,14 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, isLikedProduct, updateSignedInUser }: ProductCardProps) => {
     return (
-        <div className='w-[200px] flex flex-col gap-2'>
+        <div className='max-w-[230px] flex flex-col gap-2'>
             <Link href={`/products/${product._id}`} className='hover:bg-slate-100'>
                 <Image
                     src={product?.media[0] || '/placeholder.jpg'}
                     alt='product'
                     width={250}
                     height={230}
-                    className='max-h-[230px] rounded-lg border p-4'
+                    className='max-h-[230px] min-h-[200px] rounded-lg border'
                 />
             </Link>
             <div className=''>

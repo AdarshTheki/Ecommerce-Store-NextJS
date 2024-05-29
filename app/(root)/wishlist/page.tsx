@@ -19,7 +19,6 @@ const WishList = () => {
             const res = await fetch('/api/users');
             const data = await res.json();
             setSignedInUser(data);
-            setLoading(false);
         } catch (err) {
             console.log('[users_GET', err);
         }

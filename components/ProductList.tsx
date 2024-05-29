@@ -31,7 +31,7 @@ const ProductList = ({ products }: { products: ProductType[] }) => {
             {!products || products.length === 0 ? (
                 <p className='text-heading2-bold text-center py-10'>No products found</p>
             ) : (
-                <div className='flex flex-wrap justify-center gap-16'>
+                <div className='sm:flex grid grid-cols-2 gap-5 flex-wrap justify-evenly sm:gap-16 mx-auto'>
                     {products?.map((product: ProductType) => (
                         <ProductCard
                             key={product?._id}

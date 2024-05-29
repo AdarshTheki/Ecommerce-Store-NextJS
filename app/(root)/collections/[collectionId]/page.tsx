@@ -40,7 +40,7 @@ const CollectionDetail = ({ params }: { params: { collectionId: string } }) => {
             <p className='text-body-normal text-grey-2 text-center max-w-[900px]'>
                 {data?.description}
             </p>
-            <div className='flex flex-wrap gap-16 justify-center'>
+            <div className='sm:flex grid grid-cols-2 gap-5 flex-wrap sm:gap-16 mx-auto'>
                 {data?.products.map((product: ProductType) => (
                     <ProductCard key={product._id} product={product} />
                 ))}

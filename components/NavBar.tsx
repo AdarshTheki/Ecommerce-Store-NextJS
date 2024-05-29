@@ -19,7 +19,7 @@ const NavBar = () => {
 
     return (
         <div className='sticky top-0 z-10 py-2 px-10 flex gap-2 justify-between items-center bg-white max-sm:px-2'>
-            <Link href='/'>
+            <Link href='/' className='border'>
                 <Image src='/logo.png' alt='logo' width={130} height={100} />
             </Link>
 
@@ -54,7 +54,7 @@ const NavBar = () => {
             </div>
 
             {/* Add to Cart Section */}
-            <div className='relative flex items-center gap-3'>
+            <div className='relative flex items-center gap-5'>
                 <Link
                     href='/cart'
                     className='flex items-center gap-3 border rounded-lg px-2 py-1 hover:bg-grey-1 hover:text-white max-md:hidden'>
@@ -101,7 +101,7 @@ const NavBar = () => {
                 )}
 
                 {/* User Section */}
-                {user ? (
+                {user?.emailAddresses ? (
                     <UserButton afterSignOutUrl='/sign-in' />
                 ) : (
                     <Link href={'/sign-in'}>
