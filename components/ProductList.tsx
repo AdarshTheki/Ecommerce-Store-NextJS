@@ -26,7 +26,7 @@ const ProductList = ({ products }: { products: ProductType[] }) => {
     return loading ? (
         <p className='text-heading2-bold text-center py-10'>Loading data ! Please wait...</p>
     ) : (
-        <div className='flex flex-col items-center gap-10 py-8 px-5 text-grey-1'>
+        <div className='flex flex-col items-center gap-10 py-8 text-grey-1'>
             <p className='text-heading1-bold'>Products</p>
             {!products || products.length === 0 ? (
                 <p className='text-heading2-bold text-center py-10'>No products found</p>

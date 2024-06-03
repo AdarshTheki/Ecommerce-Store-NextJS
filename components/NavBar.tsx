@@ -1,12 +1,13 @@
 'use client';
 
-import useCart from '@/lib/useCart';
+import React, { useState } from 'react';
 import { UserButton, useUser } from '@clerk/nextjs';
 import { CircleUserRound, Menu, Search, ShoppingCart } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+
+import useCart from '@/lib/useCart';
 
 const NavBar = () => {
     const { user } = useUser();
@@ -15,11 +16,17 @@ const NavBar = () => {
     const pathname = usePathname();
 
     const [dropdownMenu, setDropdownMenu] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
+
+    const handleSearch = () => {
+        router.push(`/search/${query}`);
+        setIsOpen(false);
+    };
 
     return (
         <div className='sticky top-0 z-10 py-2 px-10 flex gap-2 justify-between items-center bg-white max-sm:px-2'>
-            <Link href='/' className='border'>
+            <Link href='/'>
                 <Image src='/logo.png' alt='logo' width={130} height={100} />
             </Link>
 
@@ -41,16 +48,42 @@ const NavBar = () => {
             </div>
 
             {/* Search section */}
-            <div className='sm:flex gap-3 border border-grey-3 py-1.5 px-4 items-center rounded-lg hidden'>
-                <input
-                    className='outline-none max-sm:max-w-[120px] text-small-medium text-grey-1'
-                    placeholder='Search...'
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-                <button disabled={query === ''} onClick={() => router.push(`/search/${query}`)}>
-                    <Search className='cursor-pointer hover:text-red-1 text-grey-1' />
+            <div className='relative'>
+                {/* Search button */}
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className='flex rounded-full px-3 py-1 border-grey-1 border-2'>
+                    <span className='text-gray-500 mr-4'>Search...</span>
+                    <Search color='#0d1829' strokeWidth={3} />
                 </button>
+                {/* Search Dropdown */}
+                {isOpen && (
+                    <div className='fixed items-start justify-center flex bg-white bg-opacity-50 pt-5 inset-0'>
+                        <div className='w-[80%] max-w-[400px] bg-white p-10 rounded-lg shadow-lg'>
+                            <input
+                                type='text'
+                                className='border border-gray-300 px-4 py-2 rounded w-full mb-2'
+                                placeholder='Search...'
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                            />
+
+                            <div className='flex gap-2'>
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className='bg-red-1 hover:bg-red-1/80 text-white px-4 py-2 rounded w-full'>
+                                    Cancel
+                                </button>
+                                <button
+                                    disabled={query === ''}
+                                    onClick={handleSearch}
+                                    className='bg-grey-1 hover:bg-grey-1/80 text-white px-4 py-2 rounded w-full'>
+                                    Go
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Add to Cart Section */}
