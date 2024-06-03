@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
     title: 'Adarsh - Store Auth',
-    description: "E-commerce store for Admin",
+    description: 'E-commerce store for Admin',
 };
 
 export default function RootLayout({

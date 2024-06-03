@@ -95,7 +95,7 @@ const config: Config = {
                 'blue-1': '#435BFF',
                 'blue-2': '#F3ECFF',
                 'blue-3': '#F5F7F9',
-                'red-1': '#FF4898',
+                'red-1': '#FF0000',
             },
         },
     },

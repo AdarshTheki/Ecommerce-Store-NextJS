@@ -9,17 +9,17 @@ body,
 }
 
 .loadingContainer {
-    z-index: 999;
-    position: sticky;
+    z-index: 100;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: #f3096b67;
+    background-color: #ff8080;
 }
 .loadingBar {
-    z-index: 999;
+    z-index: 100;
     height: 100%;
-    background-color: #ff006a;
+    background-color: #ff0000;
     transition: width 0.5s ease-in-out;
 }

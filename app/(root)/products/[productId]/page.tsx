@@ -1,17 +1,25 @@
 import ProductInfo from '@/components/ProductInfo';
 import Gallery from '@/components/Gallery';
-import { getProductDetails, getRelatedProducts } from '@/lib/actions';
+import { getProductDetails, getRelatedProducts, getReview } from '@/lib/actions';
 import ProductCard from '@/components/ProductCard';
+import ReviewCard from '@/components/ReviewCard';
+import ReviewPosts from '@/components/ReviewPost';
 
 const ProductDetail = async ({ params }: { params: { productId: string } }) => {
     const productDetails = await getProductDetails(params.productId);
     const relatedProducts = await getRelatedProducts(params.productId);
+    const reviews = await getReview(params.productId);
 
     return (
         <>
             <div className='flex justify-center items-start gap-16 py-10 px-5 max-md:flex-col max-md:items-center'>
                 <Gallery productMedia={productDetails.media} />
                 <ProductInfo productInfo={productDetails} />
+            </div>
+
+            <div className='md:flex gap-5'>
+                <ReviewCard review={reviews} />
+                <ReviewPosts productId={params.productId} />
             </div>
 
             <div className='flex flex-col items-center px-10 py-5 max-md:px-3'>
