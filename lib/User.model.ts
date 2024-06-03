@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    review: {
+        type: Array,
+        default: [],
+    },
 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

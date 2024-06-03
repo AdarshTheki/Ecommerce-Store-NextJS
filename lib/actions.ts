@@ -30,3 +30,40 @@ export const getUser = async () => {
     const user = await fetch(`/api/users`);
     return await user.json();
 };
+
+export const getReview = async (productId: string) => {
+    const reviews = await fetch(`http://localhost:3000/api/users/review/${productId}`);
+    return await reviews.json();
+};
+
+const urls = '/coverImage.jpg';
+
+export const data = [
+    {
+        id: 1,
+        url: '#',
+        image: urls,
+        pic: '/pic1.jpg',
+        name: 'Kucing Malas',
+        description: 'Portal pecinta kucing',
+        follower: 12,
+    },
+    {
+        id: 2,
+        url: '#',
+        image: urls,
+        pic: '/pic2.jpg',
+        name: 'Adarsh Verma',
+        description: 'Nothing about Portal  kucing',
+        follower: 42,
+    },
+    {
+        id: 3,
+        url: '#',
+        image: urls,
+        pic: '/pic3.jpg',
+        name: 'Umesh Kumar Yadev',
+        description: 'This is haking of website',
+        follower: 104,
+    },
+];
