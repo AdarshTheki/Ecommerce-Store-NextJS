@@ -13,7 +13,7 @@ const ProductList = ({ products, users }: ProductListProps) => {
                 Our app showcases these products in a visually appealing manner, ensuring a seamless
                 and enjoyable shopping journey. Additionally, we take pride in curating awesome
                 collections, featuring products that are carefully selected to meet your needs and
-                preferences. Discover the perfect item for you with our app's detailed and
+                preferences. Discover the perfect item for you with our apps detailed and
                 captivating descriptions. Upgrade your shopping experience today with our ecommerce
                 app.
             </p>
