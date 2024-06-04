@@ -3,7 +3,13 @@ import Link from 'next/link';
 const Collections = async ({ collections }: { collections: CollectionType[] }) => {
     return (
         <div className=' text-grey-1 px-4 py-5'>
-            <p className='text-heading2-bold'>Collections</p>
+            <h2 className='text-heading2-bold'>Collections</h2>
+            <p className='py-5'>
+                Our ecommerce app offers a wide range of products including phones, clothes, and
+                computers, all neatly organized into curated collections for easy browsing. From the
+                latest smartphones to trendy fashion pieces and high-performance laptops, our app
+                showcases a variety of items to suit every need and preference.
+            </p>
             {!collections || collections.length === 0 ? (
                 <p className='text-heading3-bold text-center py-10'>No collections found</p>
             ) : (
@@ -28,6 +34,13 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
                     ))}
                 </section>
             )}
+            <p className='py-5'>
+                Overall, our e-commerce app with Next.js is designed to provide a convenient,
+                secure, and enjoyable shopping experience for users, while also offering sellers a
+                modern and efficient platform to showcase and sell their products. With its
+                user-friendly interface, fast loading times, and personalized recommendations, our
+                app sets a new standard for online shopping.
+            </p>
         </div>
     );
 };
