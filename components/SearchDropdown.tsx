@@ -58,9 +58,9 @@ const SearchDropdown = () => {
                 </button>
                 {/* Search Dropdown */}
                 {isOpen && (
-                    <div className='fixed z-50 py-5 max-w-[400px] right-4 top-20 bottom-10 bg-white shadow-2xl rounded-lg'>
-                        <div className='h-full px-5 overflow-y-scroll'>
-                            <div className='flex gap-5 items-center'>
+                    <div className='fixed max-w-96 w-full right-5 top-14 bottom-14 bg-white border shadow-2xl rounded-lg flex-col'>
+                        <div className='h-full overflow-y-scroll'>
+                            <div className='sticky p-4 bg-white top-0 flex gap-2 items-center'>
                                 <input
                                     type='text'
                                     className='border border-gray-300 px-4 py-2 rounded-full w-full'
