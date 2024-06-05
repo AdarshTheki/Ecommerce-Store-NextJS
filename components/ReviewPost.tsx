@@ -47,44 +47,39 @@ const ReviewPosts = ({ productId }: { productId: string }) => {
     };
 
     return (
-        <div className='flex flex-col w-full'>
-            <div className='px-12 py-5'>
-                <h2 className='text-grey-1 text-3xl font-semibold'>Your opinion matters to us!</h2>
+        <div className='w-full flex flex-col items-center'>
+            <div className='flex flex-col items-center py-6 space-y-3'>
+                <span className='text-lg text-grey-1'>How was quality of the call?</span>
+                <div className='flex space-x-3'>
+                    {[...Array(5)].map((_, index) => {
+                        index += 1;
+                        return (
+                            <StarIcon
+                                key={index}
+                                className='cursor-pointer'
+                                fill={index <= (hover || rating) ? 'gold' : '#fff'}
+                                onClick={() => handleClick(index)}
+                                onMouseEnter={() => handleMouseEnter(index)}
+                                onMouseLeave={handleMouseLeave}
+                                size={30}
+                                strokeWidth={1}
+                            />
+                        );
+                    })}
+                </div>
             </div>
-            <div className='bg-gray-200 w-full flex flex-col items-center'>
-                <div className='flex flex-col items-center py-6 space-y-3'>
-                    <span className='text-lg text-grey-1'>How was quality of the call?</span>
-                    <div className='flex space-x-3'>
-                        {[...Array(5)].map((_, index) => {
-                            index += 1;
-                            return (
-                                <StarIcon
-                                    key={index}
-                                    className='cursor-pointer'
-                                    fill={index <= (hover || rating) ? 'gold' : '#fff'}
-                                    onClick={() => handleClick(index)}
-                                    onMouseEnter={() => handleMouseEnter(index)}
-                                    onMouseLeave={handleMouseLeave}
-                                    size={30}
-                                    strokeWidth={1}
-                                />
-                            );
-                        })}
-                    </div>
-                </div>
-                <div className='w-full px-4 flex flex-col'>
-                    <textarea
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        rows={3}
-                        placeholder=' Leave a message, if you want'
-                        className='p-4 rounded-xl resize-none'></textarea>
-                    <button
-                        onClick={() => handleReview()}
-                        className='py-3 my-8 text-lg bg-gradient-to-r bg-grey-1 hover:bg-grey-1/80 rounded-xl text-white'>
-                        Rate now
-                    </button>
-                </div>
+            <div className='w-full px-4 flex flex-col'>
+                <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    rows={3}
+                    placeholder=' Leave a message, if you want'
+                    className='p-4 rounded-xl resize-none'></textarea>
+                <button
+                    onClick={() => handleReview()}
+                    className='py-3 my-8 text-lg bg-gradient-to-r bg-grey-1 hover:bg-grey-1/80 rounded-xl text-white'>
+                    Rate now
+                </button>
             </div>
         </div>
     );

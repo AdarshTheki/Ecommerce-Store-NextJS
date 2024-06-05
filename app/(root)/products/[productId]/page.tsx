@@ -17,7 +17,9 @@ const ProductDetail = async ({ params }: { params: { productId: string } }) => {
                 <ProductInfo productInfo={productDetails} />
             </div>
 
-            <div className='md:flex gap-5'>
+            <h2 className='text-heading3-bold text-center py-5'>Your opinion matters to us!</h2>
+
+            <div className='grid sm:grid-cols-2 bg-gray-200 gap-5'>
                 <ReviewCard review={reviews} />
                 <ReviewPosts productId={params.productId} />
             </div>

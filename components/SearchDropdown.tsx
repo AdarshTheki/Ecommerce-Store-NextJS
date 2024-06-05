@@ -86,29 +86,30 @@ const SearchDropdown = () => {
                                                 .toLowerCase()
                                                 .includes(query.toLowerCase())
                                     )
-                                    .map((product: ProductType) => (
-                                        <div
-                                            onClick={() => handleGoProduct(product._id)}
-                                            key={product._id}
-                                            className='flex gap-3 items-center hover:bg-grey-1/20 p-2 rounded-lg cursor-pointer'>
-                                            <Image
-                                                src={product?.media[0] || '/placeholder.jpg'}
-                                                alt='coverImage'
-                                                width={40}
-                                                height={20}
-                                                className='object-contain'
-                                            />
-                                            <p>
-                                                <span className='text-small-medium'>
-                                                    {product.title}
-                                                </span>
-                                                ,
-                                                <span className='text-small-bold'>
-                                                    {product.category}
-                                                </span>
-                                            </p>
-                                        </div>
-                                    ))}
+                                    .map((product: ProductType) => {
+                                        const url =
+                                            typeof product.media === 'string'
+                                                ? product.media
+                                                : product.media[0];
+                                        return (
+                                            <div
+                                                onClick={() => handleGoProduct(product._id)}
+                                                key={product._id}
+                                                className='flex gap-3 items-center hover:bg-grey-1/20 p-2 rounded-lg cursor-pointer'>
+                                                <Image
+                                                    src={url || '/placeholder.jpg'}
+                                                    alt='coverImage'
+                                                    width={40}
+                                                    height={20}
+                                                    className='object-contain'
+                                                />
+                                                <p className='text-small-bold'>
+                                                    {product.title},{' '}
+                                                    <strong>{product.category}</strong>
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
                             </div>
                         </div>
                     </div>

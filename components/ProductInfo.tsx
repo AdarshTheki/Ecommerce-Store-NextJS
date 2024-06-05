@@ -19,7 +19,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ productInfo }) => {
     return (
         <div className='max-w-[400px] flex flex-col gap-4 text-grey-1'>
             <div className='flex justify-between items-center'>
-                <p className='text-heading3-bold'>{productInfo?.title}</p>
+                <p className='sm:text-heading3-bold text-heading4-bold capitalize'>
+                    {productInfo?.title}
+                </p>
                 <HeartFavorite product={productInfo} isLikedProduct={false} />
             </div>
 

@@ -1,25 +1,31 @@
 import Link from 'next/link';
 import HeartFavorite from './HeartFavorite';
+import Image from 'next/image';
 
 interface ProductCardProps {
-    product: ProductType;
+    product: any;
     isLikedProduct?: boolean;
     updateSignedInUser?: (updatedUser: UserType) => void;
 }
 
 const ProductCard = ({ product, isLikedProduct, updateSignedInUser }: ProductCardProps) => {
+    const url = typeof product.media === 'string' ? product.media : product.media[0];
     return (
-        <div className='max-w-[230px] mx-auto flex flex-col gap-2'>
-            <Link
-                href={`/products/${product._id}`}
-                style={{ backgroundImage: `url('${product?.media[0]}')` }}
-                className='relative w-full sm:h-52 h-40 bg-cover bg-top rounded-lg overflow-hidden shadow-lg'></Link>
+        <div className='max-w-[230px] mx-auto text-grey-1 grid gap-2'>
+            <Link href={`/products/${product._id}`}>
+                <Image
+                    src={url || '/placeholder.jpg'}
+                    alt='productImage'
+                    width={250}
+                    height={180}
+                />
+            </Link>
             <div className='p-2'>
-                <p className='text-base-bold capitalize'>{product.title}</p>
+                <p className='sm:text-base-bold text-small-bold capitalize'>{product.title}</p>
                 <p className='text-small-medium text-slate-400 capitalize'>{product.category}</p>
                 <div className='flex justify-between items-center'>
-                    <p className='text-body-bold'>
-                        {product.price?.toLocaleString('en-IN', {
+                    <p className='sm:text-body-bold text-small-bold'>
+                        {product.expense?.toLocaleString('en-IN', {
                             maximumFractionDigits: 0,
                             style: 'currency',
                             currency: 'INR',
