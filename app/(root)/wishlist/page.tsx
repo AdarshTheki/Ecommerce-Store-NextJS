@@ -17,7 +17,6 @@ const WishList = () => {
         try {
             const res = await fetch(`/api/users`);
             const data = await res.json();
-            console.log(data);
             setSignedInUser(data);
         } catch (err) {
             console.log('[users_GET', err);
@@ -30,20 +29,20 @@ const WishList = () => {
         }
     }, [user]);
 
-    const getWishlistProducts = async () => {
-        setLoading(true);
-        if (!signedInUser) return;
-        const wishlistProducts = await Promise.all(
-            signedInUser.wishlist.map(async (productId) => {
-                const res = await getProductDetails(productId);
-                return res;
-            })
-        );
-        setWishlist(wishlistProducts);
-        setLoading(false);
-    };
-
     useEffect(() => {
+        const getWishlistProducts = async () => {
+            setLoading(true);
+            if (!signedInUser) return;
+            const wishlistProducts = await Promise.all(
+                signedInUser.wishlist.map(async (productId) => {
+                    const res = await getProductDetails(productId);
+                    return res;
+                })
+            );
+            setWishlist(wishlistProducts);
+            setLoading(false);
+        };
+
         if (signedInUser) {
             getWishlistProducts();
         }

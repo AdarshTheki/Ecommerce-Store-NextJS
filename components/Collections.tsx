@@ -10,7 +10,7 @@ const Collections: React.FC<CollectionProps> = async ({ collections }) => {
         <div className=' text-grey-1 px-4 py-5'>
             <h2 className='text-heading2-bold'>Collections</h2>
             <p className='py-5'>
-                Our ecommerce app offers a wide range of products including phones, clothes, and
+                Our e-commerce app offers a wide range of products including phones, clothes, and
                 computers, all neatly organized into curated collections for easy browsing. From the
                 latest smartphones to trendy fashion pieces and high-performance laptops, our app
                 showcases a variety of items to suit every need and preference.

@@ -96,7 +96,7 @@ const ProductList = ({ users }: UserTypeProps) => {
             <Pagination
                 limit={limit}
                 skip={skip}
-                totalProducts={product?.totals}
+                totalProducts={product?.totals || 10}
                 onPageChange={handleSetSkip}
             />
         </div>
@@ -128,7 +128,7 @@ const Pagination: React.FC<PaginationProps> = ({ limit, skip, totalProducts, onP
         }
     };
 
-    const handlePageClick = (pageNumber) => {
+    const handlePageClick = (pageNumber: number) => {
         onPageChange((pageNumber - 1) * limit);
     };
 
