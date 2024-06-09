@@ -11,7 +11,7 @@ export const connectToDB = async (): Promise<void> => {
     }
 
     try {
-        await mongoose.connect(process.env.MONGODB_URL + '/E-Commerce_Store' || '');
+        await mongoose.connect(process.env.MONGODB_URL + '/E-Shopify-Store' || '');
         isConnected = true;
         console.log('MongoDB is connected');
     } catch (err: any) {

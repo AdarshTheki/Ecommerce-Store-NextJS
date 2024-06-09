@@ -9,16 +9,17 @@ type ProductType = {
     _id: string;
     title: string;
     description: string;
-    media: [string];
-    category: string;
     collections: [string];
+    category: string;
+    media: [string];
+    thumbnail: string;
     tags: [string];
     price: number;
-    expense: number;
-    sizes: [string];
-    colors: [string];
-    createdAt: string;
-    updatedAt: string;
+    discount: number;
+    rating: number;
+    stock: number;
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 type UserType = {

@@ -1,115 +1,113 @@
 'use client';
 
-import { getProducts } from '@/lib/actions';
+import { useState, useEffect, useCallback } from 'react';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import useDropdown from '@/utils/useDropdown';
 
 const SearchDropdown = () => {
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const { isOpen, toggle, dropdownRef } = useDropdown();
     const [query, setQuery] = useState<string>('');
-    const dropdownRef = useRef<HTMLDivElement>(null);
     const [products, setProducts] = useState<ProductType[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const fetchData = async (query: string) => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/search?q=${query}`);
+            const data = await response.json();
+            setProducts(data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+        setLoading(false);
+    };
 
     useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
+        const handler = setTimeout(() => {
+            if (query) {
+                fetchData(query);
             }
+        }, 500);
+
+        return () => {
+            clearTimeout(handler);
         };
-        document.addEventListener('mousedown', handleOutsideClick);
-        return () => document.removeEventListener('mousedown', handleOutsideClick);
-    }, []);
+    }, [query]);
 
-    const fetchData = async () => {
-        const res = await getProducts();
-        setProducts(res);
-    };
+    const handleGoProduct = useCallback(
+        (id: string) => {
+            router.push(`/products/${id}`);
+            toggle();
+        },
+        [router, toggle]
+    );
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const handleSearch = () => {
+    const handleSearch = useCallback(() => {
+        if (query.length === 0) return;
         router.push(`/search/${query}`);
-        toggleDropdown();
-    };
-
-    const handleGoProduct = (id: string) => {
-        router.push(`/products/${id}`);
-        toggleDropdown();
-    };
+        toggle();
+    }, [router, toggle, query]);
 
     return (
         <>
-            <div className='relative' ref={dropdownRef}>
+            <div className='relative'>
                 {/* Search button */}
                 <button
-                    onClick={toggleDropdown}
+                    onClick={toggle}
                     className='flex items-center rounded-full text-base-bold px-2 p-1 border-grey-1 border text-grey-1 hover:bg-grey-1 hover:text-white'>
                     <span>Search...</span>
                     <Search />
                 </button>
                 {/* Search Dropdown */}
                 {isOpen && (
-                    <div className='fixed max-w-96 w-full right-5 top-14 bottom-14 bg-white border shadow-2xl rounded-lg flex-col'>
-                        <div className='h-full overflow-y-scroll'>
-                            <div className='sticky p-4 bg-white top-0 flex gap-2 items-center'>
+                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-40'>
+                        <div
+                            ref={dropdownRef}
+                            className='rounded-2xl overflow-hidden shadow-lg h-auto sm:w-96 w-[90vw] bg-white'>
+                            <div className='p-4 bg-gray-100 top-0 flex gap-2 items-center justify-between'>
                                 <input
                                     type='text'
-                                    className='border border-gray-300 px-4 py-2 rounded-full w-full'
-                                    placeholder='Search...'
+                                    className='border border-gray-300 px-4 py-2 rounded-full w-full max-w-60'
+                                    placeholder='Search Products...'
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
                                 />
                                 <button
-                                    disabled={query === ''}
                                     onClick={handleSearch}
-                                    className='bg-grey-1 hover:bg-grey-1/80 text-white p-2 rounded-full w-[100px]'>
+                                    className='p-2 rounded-lg bg-grey-1 text-white'>
                                     Go
                                 </button>
                             </div>
-                            <div className='text-grey-1'>
-                                {products
-                                    .filter(
-                                        (item: ProductType) =>
-                                            item.title
-                                                .toLowerCase()
-                                                .includes(query.toLowerCase()) ||
-                                            item.category
-                                                .toLowerCase()
-                                                .includes(query.toLowerCase())
-                                    )
-                                    .map((product: ProductType) => {
-                                        const url =
-                                            typeof product.media === 'string'
-                                                ? product.media
-                                                : product.media[0];
-                                        return (
-                                            <div
-                                                onClick={() => handleGoProduct(product._id)}
-                                                key={product._id}
-                                                className='flex gap-3 items-center hover:bg-grey-1/20 p-2 rounded-lg cursor-pointer'>
-                                                <Image
-                                                    src={url || '/placeholder.jpg'}
-                                                    alt='coverImage'
-                                                    width={40}
-                                                    height={20}
-                                                    className='object-contain'
-                                                />
-                                                <p className='text-small-bold'>
-                                                    {product.title},{' '}
-                                                    <strong>{product.category}</strong>
-                                                </p>
-                                            </div>
-                                        );
-                                    })}
+                            <div className='text-grey-1 overflow-y-auto p-2 '>
+                                {loading ? (
+                                    <div className='flex justify-center items-center p-4'>
+                                        Loading...
+                                    </div>
+                                ) : (
+                                    products.map((product: ProductType) => (
+                                        <div
+                                            onClick={() => handleGoProduct(product._id)}
+                                            key={product._id}
+                                            className='flex gap-3 mb-1 items-center hover:bg-grey-1/20 rounded-lg cursor-pointer'>
+                                            <Image
+                                                src={product.thumbnail || '/placeholder.jpg'}
+                                                alt='coverImage'
+                                                width={40}
+                                                height={20}
+                                                className='object-contain'
+                                            />
+                                            <small>
+                                                {product.title},{' '}
+                                                <strong className=' hidden sm:block'>
+                                                    {product.category}
+                                                </strong>
+                                            </small>
+                                        </div>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>

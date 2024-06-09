@@ -1,7 +1,6 @@
 'use client';
 
-/* eslint-disable react-hooks/exhaustive-deps */
-import Loader from '@/components/Loader';
+import Loader from '@/utils/Loader';
 import ProductCard from '@/components/ProductCard';
 import { getProductDetails } from '@/lib/actions';
 import { useUser } from '@clerk/nextjs';
@@ -16,8 +15,9 @@ const WishList = () => {
 
     const getUser = async () => {
         try {
-            const res = await fetch('/api/users');
+            const res = await fetch(`/api/users`);
             const data = await res.json();
+            console.log(data);
             setSignedInUser(data);
         } catch (err) {
             console.log('[users_GET', err);
@@ -49,10 +49,6 @@ const WishList = () => {
         }
     }, [signedInUser]);
 
-    const updateSignedInUser = (updatedUser: UserType) => {
-        setSignedInUser(updatedUser);
-    };
-
     return loading ? (
         <Loader />
     ) : (
@@ -60,14 +56,9 @@ const WishList = () => {
             <p className='text-heading3-bold my-10'>Your Wishlist</p>
             {wishlist.length === 0 && <p>No items in your wishlist</p>}
 
-            <div className='flex flex-wrap justify-center gap-16'>
+            <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10'>
                 {wishlist.map((product) => (
-                    <ProductCard
-                        key={product._id}
-                        product={product}
-                        isLikedProduct={true}
-                        updateSignedInUser={updateSignedInUser}
-                    />
+                    <ProductCard key={product._id} product={product} isLikedProduct={true} />
                 ))}
             </div>
         </div>

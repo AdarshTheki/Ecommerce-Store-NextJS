@@ -7,15 +7,15 @@ const Search = async ({ params }: { params: { query: string } }) => {
     const decodedQuery = decodeURIComponent(params.query);
 
     return (
-        <div className='px-10 py-5'>
-            <p className='text-heading3-bold my-10'>
+        <div className='sm:px-10 py-5 px-2'>
+            <p className='sm:text-heading3-bold text-heading4-bold sm:my-10 py-2'>
                 Search results for &quot;{decodedQuery}&quot;
             </p>
             {!searchedProducts ||
                 (searchedProducts.length === 0 && (
                     <p className='text-body-bold my-5'>No result found</p>
                 ))}
-            <div className='flex flex-wrap justify-start sm:gap-16 gap-5'>
+            <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10'>
                 {searchedProducts?.map((product: ProductType) => (
                     <ProductCard key={product._id} product={product} />
                 ))}

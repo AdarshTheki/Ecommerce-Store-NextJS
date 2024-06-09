@@ -14,10 +14,12 @@ export const POST = async (req: NextRequest) => {
 
         await connectToDB();
 
-        const user = await User.findOne({ clerkId: userId });
+        let user = await User.findOne({ clerkId: userId });
 
-        if (!user) {
-            return new NextResponse('User not found', { status: 404 });
+        // When the user sign-in for the 1st, immediately we will create a new user for them
+        if (!user && userId.includes('user_')) {
+            user = new User({ clerkId: userId });
+            await user.save();
         }
 
         const { productId } = await req.json();
@@ -38,7 +40,10 @@ export const POST = async (req: NextRequest) => {
 
         await user.save();
 
-        return NextResponse.json(user, { status: 200 });
+        return NextResponse.json(user, {
+            status: 200,
+            headers: { 'Access-Control-Allow-Origin': '*' },
+        });
     } catch (err) {
         console.log('[wishlist_POST]', err);
         return new NextResponse('Internal Server Error', { status: 500 });

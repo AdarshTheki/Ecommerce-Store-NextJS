@@ -1,6 +1,11 @@
 import Link from 'next/link';
+import React from 'react';
 
-const Collections = async ({ collections }: { collections: CollectionType[] }) => {
+interface CollectionProps {
+    collections: CollectionType[];
+}
+
+const Collections: React.FC<CollectionProps> = async ({ collections }) => {
     return (
         <div className=' text-grey-1 px-4 py-5'>
             <h2 className='text-heading2-bold'>Collections</h2>
@@ -18,14 +23,15 @@ const Collections = async ({ collections }: { collections: CollectionType[] }) =
                         <article
                             key={collection._id}
                             className='relative w-full sm:h-52 h-40 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg hover:shadow-2xl  transition duration-300 ease-in-out'
-                            style={{ backgroundImage: `url('${collection.image}')` }}>
+                            style={{
+                                backgroundImage: `url('${collection.image ?? '/placeholder.jpg'}')`,
+                            }}>
                             <div className='absolute inset-0 bg-black bg-opacity-60 group-hover:opacity-30 transition duration-300 ease-in-out'></div>
                             <div className='relative w-full h-full px-4 sm:px-6 lg:px-4 flex justify-center items-center'>
                                 <h3 className='text-center'>
                                     <Link
                                         className='text-white text-heading4-bold text-center'
                                         href={`/collections/${collection._id}`}>
-                                        {/* <span className='absolute inset-0'></span> */}
                                         {collection.title}
                                     </Link>
                                 </h3>

@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest) => {
         const { userId } = auth();
 
         if (!userId) {
-            return new NextResponse(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
+            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
         await connectToDB();
@@ -17,12 +17,15 @@ export const GET = async (req: NextRequest) => {
         let user = await User.findOne({ clerkId: userId });
 
         // When the user sign-in for the 1st, immediately we will create a new user for them
-        if (!user) {
-            user = await User.create({ clerkId: userId });
-            await user.save();
-        }
+        // if (!user) {
+        //     user = new User({ clerkId: userId });
+        //     await user.save();
+        // }
 
-        return NextResponse.json(user, { status: 200 });
+        return NextResponse.json(user, {
+            status: 200,
+            headers: { 'Access-Control-Allow-Origin': '*' },
+        });
     } catch (err) {
         console.log('[users_GET]', err);
         return new NextResponse('Internal Server Error', { status: 500 });

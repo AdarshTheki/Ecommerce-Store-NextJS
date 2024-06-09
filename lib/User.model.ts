@@ -1,24 +1,19 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-    clerkId: String,
-    wishlist: {
-        type: Array,
-        default: [],
+const userSchema = new mongoose.Schema(
+    {
+        clerkId: { type: String, required: true },
+        wishlist: {
+            type: Array,
+            default: [],
+        },
+        review: {
+            type: Array,
+            default: [],
+        },
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
-    review: {
-        type: Array,
-        default: [],
-    },
-});
+    { timestamps: true }
+);
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 

@@ -3,7 +3,11 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-const Gallery = ({ productMedia }: { productMedia: string[] }) => {
+interface GalleryProps {
+    productMedia: [string];
+}
+
+const Gallery: React.FC<GalleryProps> = ({ productMedia }) => {
     const [mainImage, setMainImage] = useState(productMedia[0]);
 
     return (

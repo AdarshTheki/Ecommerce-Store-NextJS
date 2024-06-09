@@ -14,7 +14,6 @@ const Loader = () => {
                         fill-rule='evenodd'
                     />
                 </svg>
-
                 <div className='text-base-bold'>Loading ...</div>
             </div>
         </div>
