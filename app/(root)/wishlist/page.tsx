@@ -3,38 +3,20 @@
 import Loader from '@/utils/Loader';
 import ProductCard from '@/components/ProductCard';
 import { getProductDetails } from '@/lib/actions';
-import { useUser } from '@clerk/nextjs';
 import React, { useEffect, useState } from 'react';
+import useFetch from '@/utils/useFetch';
 
 const WishList = () => {
-    const { user } = useUser();
-
     const [loading, setLoading] = useState(true);
-    const [signedInUser, setSignedInUser] = useState<UserType | null>(null);
     const [wishlist, setWishlist] = useState<ProductType[]>([]);
-
-    const getUser = async () => {
-        try {
-            const res = await fetch(`/api/users`);
-            const data = await res.json();
-            setSignedInUser(data);
-        } catch (err) {
-            console.log('[users_GET', err);
-        }
-    };
-
-    useEffect(() => {
-        if (user) {
-            getUser();
-        }
-    }, [user]);
+    const { data } = useFetch('/api/users');
 
     useEffect(() => {
         const getWishlistProducts = async () => {
             setLoading(true);
-            if (!signedInUser) return;
+            if (!data) return;
             const wishlistProducts = await Promise.all(
-                signedInUser.wishlist.map(async (productId) => {
+                data?.wishlist.map(async (productId: string) => {
                     const res = await getProductDetails(productId);
                     return res;
                 })
@@ -43,15 +25,15 @@ const WishList = () => {
             setLoading(false);
         };
 
-        if (signedInUser) {
+        if (data) {
             getWishlistProducts();
         }
-    }, [signedInUser]);
+    }, [data]);
 
-    return loading ? (
-        <Loader />
-    ) : (
-        <div className='px-10 py-5'>
+    if (loading) return <Loader />;
+
+    return (
+        <div className='sm:px-10 px-4 py-5'>
             <p className='text-heading3-bold my-10'>Your Wishlist</p>
             {wishlist.length === 0 && <p>No items in your wishlist</p>}
 

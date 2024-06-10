@@ -8,7 +8,7 @@ interface GalleryProps {
 }
 
 const Gallery: React.FC<GalleryProps> = ({ productMedia }) => {
-    const [mainImage, setMainImage] = useState(productMedia[0]);
+    const [mainImage, setMainImage] = useState(productMedia?.[0]);
 
     return (
         <div className='flex flex-col gap-3 max-w-[500px]'>

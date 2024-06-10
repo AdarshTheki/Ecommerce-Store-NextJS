@@ -17,10 +17,10 @@ export const GET = async (req: NextRequest) => {
         let user = await User.findOne({ clerkId: userId });
 
         // When the user sign-in for the 1st, immediately we will create a new user for them
-        // if (!user) {
-        //     user = new User({ clerkId: userId });
-        //     await user.save();
-        // }
+        if (!user && userId.includes('user_')) {
+            user = new User({ clerkId: userId });
+            await user.save();
+        }
 
         return NextResponse.json(user, {
             status: 200,

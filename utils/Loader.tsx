@@ -1,4 +1,10 @@
-const Loader = () => {
+import React from 'react';
+
+interface LoaderProps {
+    text?: string;
+}
+
+const Loader: React.FC<LoaderProps> = ({ text = 'Loading ...' }) => {
     return (
         <div className='flex items-center justify-center min-w-full min-h-full'>
             <div className='flex justify-center items-center space-x-1 text-sm text-grey-1'>
@@ -14,7 +20,7 @@ const Loader = () => {
                         fill-rule='evenodd'
                     />
                 </svg>
-                <div className='text-base-bold'>Loading ...</div>
+                <div className='text-base-bold'>{text}</div>
             </div>
         </div>
     );

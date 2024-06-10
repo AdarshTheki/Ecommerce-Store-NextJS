@@ -1,13 +1,23 @@
+'use client';
+
 import Image from 'next/image';
 import ProductCard from '@/components/ProductCard';
-import { getCollectionDetail } from '@/lib/actions';
+import useFetch from '@/utils/useFetch';
+import Loader from '@/utils/Loader';
 
-const CollectionDetail = async ({ params }: { params: { collectionId: string } }) => {
-    const data = await getCollectionDetail(params.collectionId);
+const CollectionDetail = ({ params }: { params: { collectionId: string } }) => {
+    const { isLoading, data, error } = useFetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/collections/${params.collectionId}`
+    );
+
+    if (isLoading) return <Loader text='Loaded data! Please wait...' />;
+
+    if (error) return <Loader text='Something was wrong! Please try again ?' />;
+
     return (
         <div className='sm:px-10 px-2 py-5 flex flex-col items-center gap-8'>
             <Image
-                src={data?.image}
+                src={data?.image || '/placeholder.jpg'}
                 width={1500}
                 height={1000}
                 alt='collection'

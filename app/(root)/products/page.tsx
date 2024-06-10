@@ -1,14 +1,19 @@
-import ProductList from '@/components/ProductList';
-import User from '@/lib/User.model';
-import { auth } from '@clerk/nextjs/server';
+'use client';
 
-const ProductPage = async () => {
-    const { userId } = auth();
-    const users = await User.findOne({ clerkId: userId });
+import ProductList from '@/components/ProductList';
+import Loader from '@/utils/Loader';
+import useFetch from '@/utils/useFetch';
+
+const ProductPage = () => {
+    const { isLoading, data, error } = useFetch('/api/users');
+
+    if (isLoading) return <Loader text='Loaded data! Please wait...' />;
+
+    if (error) return <Loader text='Something was wrong! Please try again?' />;
 
     return (
         <div>
-            <ProductList users={users} />
+            <ProductList users={data} />
         </div>
     );
 };

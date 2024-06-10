@@ -18,7 +18,7 @@ const Dropdown = () => {
 
     const toggle = () => setIsOpen(!isOpen);
 
-    return { isOpen, dropdownRef, toggle, setIsOpen };
+    return { isOpen, dropdownRef, toggle };
 };
 
 export default Dropdown;
