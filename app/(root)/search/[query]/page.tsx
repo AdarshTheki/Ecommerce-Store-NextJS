@@ -21,7 +21,7 @@ const Search = ({ params }: { params: { query: string } }) => {
             </p>
             {!data ||
                 (data?.length === 0 && <p className='text-body-bold my-5'>No result found</p>)}
-            <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10'>
+            <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 md:gap-4'>
                 {data?.map((product: ProductType) => (
                     <ProductCard key={product._id} product={product} />
                 ))}

@@ -44,8 +44,8 @@ const ProductList = ({ users }: UserTypeProps) => {
     const handleSetSkip = (page: number) => setSkip(page);
 
     return (
-        <div className='py-8 text-grey-1 px-4'>
-            <div className='sm:flex justify-between items-center'>
+        <div className='py-8'>
+            <div className='sm:flex justify-between px-4 items-center'>
                 <div className='flex gap-4 flex-wrap'>
                     <strong>Sort By:</strong>
                     {sortItem.map((i) => (
@@ -75,12 +75,12 @@ const ProductList = ({ users }: UserTypeProps) => {
                     </small>
                 </div>
             </div>
-            <hr className=' border-b border-gray-400 my-5' />
+            <hr className='border-b border-gray-400 my-5' />
             {loading && <h2 className='py-10 text-body-bold text-center'>Loading...</h2>}
             {!product || product?.products.length === 0 ? (
                 <p className='text-heading2-bold text-center py-10'>No products found</p>
             ) : (
-                <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10'>
+                <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 md:gap-4 px-2'>
                     {product?.products?.map((product) => (
                         <ProductCard
                             key={product?._id}

@@ -37,7 +37,7 @@ const WishList = () => {
             <p className='text-heading3-bold my-10'>Your Wishlist</p>
             {wishlist.length === 0 && <p>No items in your wishlist</p>}
 
-            <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10'>
+            <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 md:gap-4 '>
                 {wishlist.map((product) => (
                     <ProductCard key={product._id} product={product} isLikedProduct={true} />
                 ))}
