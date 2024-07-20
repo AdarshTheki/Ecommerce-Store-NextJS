@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import useDropdown from '@/utils/useDropdown';
 import useFetch from '@/utils/useFetch';
 
-const SearchDropdown = () => {
+const SearchSection = () => {
     const router = useRouter();
     const { isOpen, toggle, dropdownRef } = useDropdown();
     const [query, setQuery] = useState<string>('');
@@ -32,7 +32,7 @@ const SearchDropdown = () => {
             if (query) {
                 fetchData(query);
             }
-        }, 500);
+        }, 1000);
 
         return () => {
             clearTimeout(handler);
@@ -59,21 +59,19 @@ const SearchDropdown = () => {
         <>
             <div className='relative'>
                 {/* Search button */}
-                <button
-                    onClick={toggle}
-                    className='flex items-center rounded-full text-base-bold px-2 p-1 border-grey-1 border text-grey-1 hover:bg-grey-1 hover:text-white'>
-                    <span>Search...</span>
+                <button onClick={toggle} className='flex items-center text-base-bold p-1'>
                     <Search />
+                    <span className='hidden sm:block'>Search...</span>
                 </button>
                 {/* Search Dropdown */}
                 {isOpen && (
-                    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
+                    <div className='fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-40'>
                         <div
                             ref={dropdownRef}
-                            className='rounded-2xl sm:p-4 p-2 overflow-hidden overflow-y-auto shadow-lg w-full h-full sm:h-[80vh] sm:w-[60vw] bg-white'>
+                            className='rounded-2xl overflow-hidden shadow-lg w-full h-[90%] max-w-[800px] bg-gray-100'>
                             <form
                                 onSubmit={handleSearch}
-                                className='flex w-full flex-row items-start justify-between sm:gap-5 bg-white'>
+                                className='flex z-10 sticky top-0 w-full flex-row items-start justify-between gap-5 bg-white p-2'>
                                 <div className='flex w-full flex-row items-center sm:gap-5'>
                                     <span
                                         onClick={toggle}
@@ -93,17 +91,18 @@ const SearchDropdown = () => {
                                     <Search />
                                 </button>
                             </form>
-                            <div className='text-grey-1 p-2'>
+                            <div className='overflow-y-scroll h-full pb-5'>
                                 {loading ? (
                                     <div className='flex justify-center items-center p-4'>
                                         Loading...
                                     </div>
                                 ) : (
+                                    query &&
                                     products.map((product: ProductType) => (
                                         <div
                                             onClick={() => handleGoProduct(product._id)}
                                             key={product._id}
-                                            className='flex gap-3 mb-1 items-center hover:bg-grey-1/20 rounded-lg cursor-pointer'>
+                                            className='flex gap-4 items-center px-4 hover:bg-grey-1/20 cursor-pointer'>
                                             <Image
                                                 src={product.thumbnail || '/placeholder.jpg'}
                                                 alt='coverImage'
@@ -111,31 +110,26 @@ const SearchDropdown = () => {
                                                 height={20}
                                                 className='object-contain'
                                             />
-                                            <small>
-                                                {product.title},{' '}
-                                                <strong className=' hidden sm:block'>
-                                                    {product.category}
-                                                </strong>
-                                            </small>
+                                            <p>{product.title}</p>
                                         </div>
                                     ))
                                 )}
-                                <p className='py-5 text-base-bold'>Popular Products</p>
-                                <div className='grid md:grid-cols-3 grid-cols-2 gap-2'>
+                                <p className='p-4 text-base-bold '>Popular Products</p>
+                                <div className='px-4 grid md:grid-cols-3 grid-cols-2 gap-2'>
                                     {data &&
                                         data?.products?.map((product: ProductType) => (
                                             <div
                                                 onClick={() => handleGoProduct(product._id)}
                                                 key={product._id}
-                                                className='sm:flex gap-1 md:scale-100 scale-70 mb-1 items-center hover:bg-grey-1/20 rounded-lg cursor-pointer'>
+                                                className='sm:flex gap-2 md:scale-100 scale-70 items-center hover:bg-grey-1/20 cursor-pointer'>
                                                 <Image
                                                     src={product.thumbnail || '/placeholder.jpg'}
                                                     alt='coverImage'
-                                                    width={100}
-                                                    height={50}
+                                                    width={60}
+                                                    height={30}
                                                     className='object-contain'
                                                 />
-                                                <div className='text-grey-1 flex flex-col'>
+                                                <div className='text-grey-1 p-2 flex flex-col'>
                                                     <span className='text-small-bold'>
                                                         {product?.title}
                                                     </span>
@@ -161,4 +155,4 @@ const SearchDropdown = () => {
     );
 };
 
-export default SearchDropdown;
+export default SearchSection;
