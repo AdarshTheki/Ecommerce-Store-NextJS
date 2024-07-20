@@ -7,9 +7,10 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import SearchDropdown from './SearchDropdown';
+import SearchSection from './SearchSection';
 import useCart from '@/lib/useCart';
 import useDropdown from '@/utils/useDropdown';
+import LogoSvg from './LogoSvg';
 
 const NavBar = () => {
     const { user } = useUser();
@@ -21,7 +22,7 @@ const NavBar = () => {
         <div className='sticky top-0 z-10 py-2 px-10 flex gap-2 justify-between items-center bg-white max-sm:px-2'>
             {/* Left Section */}
             <Link href='/'>
-                <Image src='/logo.png' alt='logo' width={130} height={100} />
+                <LogoSvg />
             </Link>
 
             {/* Center Section as Navigation Links Section */}
@@ -54,46 +55,51 @@ const NavBar = () => {
             {/* Right Section */}
             <div className='relative flex items-center gap-5'>
                 {/* Search Products */}
-                <SearchDropdown />
+                <SearchSection />
 
                 {/* Shopping Cart */}
-                <Link
-                    href='/cart'
-                    className='flex items-center gap-3 border border-grey-1 rounded-full px-4 py-1 hover:bg-grey-1 hover:text-white max-md:hidden'>
+                <Link href='/cart' className='flex items-center gap-2 max-md:hidden'>
                     <ShoppingCart />
-                    <p className='text-base-bold'>Cart ({cart.cartItems.length})</p>
+                    <p className='text-base-bold'>
+                        Cart <sup>({cart.cartItems.length})</sup>
+                    </p>
                 </Link>
 
                 {/* Menu Open with 600px width  */}
-                <div className=' relative' ref={dropdownRef}>
+                <div className='relative' ref={dropdownRef}>
                     <Menu className='cursor-pointer lg:hidden' onClick={toggle} />
-                    {user && isOpen && (
-                        <div className='absolute w-fit -right-2 top-9 bg-white border shadow-2xl rounded-lg flex-col lg:hidden'>
-                            <div className='flex flex-col gap-4 p-5'>
-                                <Link href='/' className='hover:text-red-1'>
+                    {isOpen && (
+                        <div className='absolute w-fit -right-2 top-9 text-gray-700 bg-white border shadow-2xl rounded-lg flex-col lg:hidden'>
+                            <div className='flex flex-col text-heading4-bold w-[250px]'>
+                                <Link
+                                    href='/'
+                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
                                     Home
                                 </Link>
-                                <Link href='/products' className='hover:text-red-1'>
+                                <Link
+                                    href='/products'
+                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
                                     Products
                                 </Link>
                                 <Link
                                     href={user?.emailAddresses ? '/wishlist' : '/sign-in'}
-                                    className='hover:text-red-1'>
+                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
                                     Wishlist
                                 </Link>
                                 <Link
                                     href={user?.emailAddresses ? '/orders' : '/sign-in'}
-                                    className='hover:text-red-1'>
+                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
                                     Orders
                                 </Link>
-                                <Link href={'/contact'} className='hover:text-red-1'>
+                                <Link
+                                    href={'/contact'}
+                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
                                     Contact
                                 </Link>
                                 <Link
                                     href='/cart'
-                                    className='flex whitespace-nowrap items-center gap-3 border rounded-full px-4 py-1 hover:bg-grey-1 hover:text-white'>
-                                    <ShoppingCart />
-                                    <p className='text-base-bold'>Cart ({cart.cartItems.length})</p>
+                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
+                                    Cart <sup>({cart.cartItems.length})</sup>
                                 </Link>
                             </div>
                         </div>
