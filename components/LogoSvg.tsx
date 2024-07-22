@@ -8,8 +8,8 @@ interface LogoSvgProps {
 const LogoSvg: React.FC<LogoSvgProps> = ({ name = 'E-Shopify' }) => {
     return (
         <p className='flex gap-2 items-center'>
-            <Slack color='red' />
-            <span className='text-[#ac51d6] text-base-bold'>{name}</span>
+            <Slack color='#2C73D2' />
+            <span className='text-[#2C73D2] text-base-bold'>{name}</span>
         </p>
     );
 };

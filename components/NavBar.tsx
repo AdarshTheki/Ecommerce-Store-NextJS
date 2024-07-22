@@ -19,14 +19,14 @@ const NavBar = () => {
     const { isOpen, toggle, dropdownRef } = useDropdown();
 
     return (
-        <div className='sticky top-0 z-10 py-2 px-10 flex gap-2 justify-between items-center bg-white max-sm:px-2'>
+        <div className='sticky top-0 z-10 py-2 px-10 flex gap-2 text-base-medium text-gray-700 justify-between items-center bg-white max-sm:px-2'>
             {/* Left Section */}
             <Link href='/'>
                 <LogoSvg />
             </Link>
 
             {/* Center Section as Navigation Links Section */}
-            <div className='flex gap-4 text-base-bold max-lg:hidden'>
+            <div className='flex gap-4 max-lg:hidden'>
                 <Link href='/' className={`hover:text-red-1 ${pathname === '/' && 'text-red-1'}`}>
                     Home
                 </Link>
@@ -61,46 +61,56 @@ const NavBar = () => {
                 <Link href='/cart' className='flex items-center gap-2 max-md:hidden'>
                     <ShoppingCart />
                     <p className='text-base-bold'>
-                        Cart <sup>({cart.cartItems.length})</sup>
+                        Cart
+                        <sup className='bg-gray-900 rounded-full text-white font-bold px-1 py-0'>
+                            {cart.cartItems.length}
+                        </sup>
                     </p>
                 </Link>
 
                 {/* Menu Open with 600px width  */}
-                <div className='relative' ref={dropdownRef}>
+                <div className='relative'>
                     <Menu className='cursor-pointer lg:hidden' onClick={toggle} />
                     {isOpen && (
-                        <div className='absolute w-fit -right-2 top-9 text-gray-700 bg-white border shadow-2xl rounded-lg flex-col lg:hidden'>
-                            <div className='flex flex-col text-heading4-bold w-[250px]'>
-                                <Link
-                                    href='/'
-                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
-                                    Home
-                                </Link>
-                                <Link
-                                    href='/products'
-                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
-                                    Products
-                                </Link>
-                                <Link
-                                    href={user?.emailAddresses ? '/wishlist' : '/sign-in'}
-                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
-                                    Wishlist
-                                </Link>
-                                <Link
-                                    href={user?.emailAddresses ? '/orders' : '/sign-in'}
-                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
-                                    Orders
-                                </Link>
-                                <Link
-                                    href={'/contact'}
-                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
-                                    Contact
-                                </Link>
-                                <Link
-                                    href='/cart'
-                                    className='hover:text-red-1 hover:bg-gray-200 py-4 px-4'>
-                                    Cart <sup>({cart.cartItems.length})</sup>
-                                </Link>
+                        <div ref={dropdownRef}>
+                            <div className='absolute -right-2 top-9 bg-white border shadow-2xl rounded-lg flex-col lg:hidden'>
+                                <div
+                                    className='flex flex-col text-center w-[200px]'
+                                    onClick={toggle}>
+                                    <Link
+                                        href='/'
+                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
+                                        Home
+                                    </Link>
+                                    <Link
+                                        href='/products'
+                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
+                                        Products
+                                    </Link>
+                                    <Link
+                                        href={user?.emailAddresses ? '/wishlist' : '/sign-in'}
+                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
+                                        Wishlist
+                                    </Link>
+                                    <Link
+                                        href={user?.emailAddresses ? '/orders' : '/sign-in'}
+                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
+                                        Orders
+                                    </Link>
+                                    <Link
+                                        href={'/contact'}
+                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
+                                        Contact
+                                    </Link>
+                                    <Link
+                                        href='/cart'
+                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
+                                        Cart
+                                        <sup className='bg-gray-900 rounded-full text-white font-bold px-1 py-0'>
+                                            {cart.cartItems.length}
+                                        </sup>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     )}
