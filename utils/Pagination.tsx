@@ -33,10 +33,10 @@ const Pagination: React.FC<PaginationProps> = ({ limit, skip, totalProducts, onP
             pageNumbers.push(
                 <button
                     key={i}
-                    onClick={() => handlePageClick(i)}
-                    className={`px-3 py-1 mx-1 rounded ${
-                        currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                    }`}>
+                    className={`px-2 py-1 border ${
+                        currentPage === i ? 'bg-blue-1' : 'bg-gray-100'
+                    }`}
+                    onClick={() => handlePageClick(i)}>
                     {i}
                 </button>
             );
@@ -45,18 +45,18 @@ const Pagination: React.FC<PaginationProps> = ({ limit, skip, totalProducts, onP
     };
 
     return (
-        <div className='flex items-center justify-center space-x-2 gap-1 flex-wrap py-5'>
+        <div className='flex flex-wrap items-center gap-2 justify-center'>
             <button
                 onClick={handlePrevious}
-                className='px-3 py-1 rounded bg-gray-200 hover:bg-gray-300'
-                disabled={currentPage === 1}>
+                className={`px-2 py-1 border hover:bg-blue-1 ${currentPage === 1 ? 'hidden' : ''}`}>
                 Previous
             </button>
             {renderPageNumbers()}
             <button
                 onClick={handleNext}
-                className='px-3 py-1 rounded bg-gray-200 hover:bg-gray-300'
-                disabled={currentPage === totalPages}>
+                className={`px-2 py-1 border hover:bg-blue-1 ${
+                    currentPage === totalPages ? 'hidden' : ''
+                }`}>
                 Next
             </button>
         </div>

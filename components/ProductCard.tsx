@@ -44,6 +44,7 @@ const ProductCard = async ({ product, isLikedProduct }: ProductCardProps) => {
                     className='h-full bg-gray-200 w-full transform transition-transform duration-300 ease-linear hover:scale-110 hover:shadow-md'
                     src={product?.thumbnail}
                     fill
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                     alt={product?.title}
                 />
                 <small className='absolute bottom-4 right-2 bg-white px-2 py-0 rounded-full text-green-600'>

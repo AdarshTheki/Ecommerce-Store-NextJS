@@ -20,7 +20,6 @@ const ProductList = ({ users }: UserTypeProps) => {
     const [product, setProduct] = useState<ProductProps>();
     const [sortBy, setSortBy] = useState('title');
     const [skip, setSkip] = useState(0);
-    const [limit, setLimit] = useState(20);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -28,7 +27,7 @@ const ProductList = ({ users }: UserTypeProps) => {
             try {
                 setLoading(true);
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/products?limit=${limit}&skip=${skip}&sortBy=${sortBy}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/products?limit=20&skip=${skip}&sortBy=${sortBy}`
                 );
                 const data = await res.json();
                 setProduct(data);
@@ -39,45 +38,39 @@ const ProductList = ({ users }: UserTypeProps) => {
             }
         };
         fetchProductWithQuery();
-    }, [limit, skip, sortBy]);
+    }, [skip, sortBy]);
 
     const handleSetSkip = (page: number) => setSkip(page);
 
     return (
         <div className='py-8'>
-            <div className='sm:flex justify-between px-4 items-center'>
-                <div className='flex gap-4 flex-wrap'>
-                    <strong>Sort By:</strong>
-                    {sortItem.map((i) => (
-                        <button
-                            key={i}
-                            onClick={() => setSortBy(i)}
-                            className={`capitalize pb-1 border-b-2 ${
-                                sortBy === i ? 'border-blue-800' : 'border-transparent'
-                            } `}>
-                            {i}
-                        </button>
-                    ))}
-                </div>
-                <div className='w-fit'>
-                    <select
-                        className='w-fit mx-auto border py-1 px-3 rounded-lg mb-1'
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                            setLimit(Number(e.target.value))
-                        }
-                        value={limit}>
-                        <option value={10}>10 / Page</option>
-                        <option value={20}>20 / Page</option>
-                        <option value={50}>50 / Page</option>
-                    </select>
-                    <small className='flex gap-4'>
-                        (Showing {skip + 1} – {limit} products of {product?.totals} products)
-                    </small>
-                </div>
+            <div className='flex flex-wrap sm:gap-6 gap-2 items-center justify-center'>
+                {sortItem.map((i) => (
+                    <button
+                        key={i}
+                        onClick={() => setSortBy(i)}
+                        className={`capitalize hover:text-blue-1 ${
+                            sortBy === i ? 'text-blue-1' : ''
+                        } `}>
+                        {i}
+                    </button>
+                ))}
             </div>
-            <hr className='border-b border-gray-400 my-5' />
-            {loading && <h2 className='py-10 text-body-bold text-center'>Loading...</h2>}
-            {!product || product?.products.length === 0 ? (
+
+            <hr className='border-b my-4' />
+            <p className='text-center py-4'>
+                (Showing {skip + 1} – 20 products of {product?.totals} products)
+            </p>
+            <Pagination
+                limit={20}
+                skip={skip}
+                totalProducts={product?.totals || 10}
+                onPageChange={handleSetSkip}
+            />
+            <hr className='border-b my-5' />
+            {loading ? (
+                <h2 className='py-10 text-body-bold text-center'>Loading...</h2>
+            ) : !product || product?.products.length === 0 ? (
                 <p className='text-heading2-bold text-center py-10'>No products found</p>
             ) : (
                 <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 md:gap-4 px-2'>
@@ -94,12 +87,6 @@ const ProductList = ({ users }: UserTypeProps) => {
                     ))}
                 </div>
             )}
-            <Pagination
-                limit={limit}
-                skip={skip}
-                totalProducts={product?.totals || 10}
-                onPageChange={handleSetSkip}
-            />
         </div>
     );
 };

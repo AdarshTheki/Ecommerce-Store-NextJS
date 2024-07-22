@@ -59,7 +59,7 @@ const SearchSection = () => {
         <>
             <div className='relative'>
                 {/* Search button */}
-                <button onClick={toggle} className='flex items-center text-base-bold p-1'>
+                <button onClick={toggle} className='flex items-center p-1'>
                     <Search />
                     <span className='hidden sm:block'>Search...</span>
                 </button>
