@@ -83,12 +83,12 @@ const CartPage = () => {
                                 className='hover:text-red-1 cursor-pointer'
                                 onClick={() => cart.increaseQuantity(cartItem.item._id)}
                             />
-                        </div>
 
-                        <Trash2
-                            className='hover:text-red-1 cursor-pointer'
-                            onClick={() => cart.removeItem(cartItem.item._id)}
-                        />
+                            <Trash2
+                                className='hover:text-red-1 cursor-pointer'
+                                onClick={() => cart.removeItem(cartItem.item._id)}
+                            />
+                        </div>
                     </div>
                 ))}
             </div>

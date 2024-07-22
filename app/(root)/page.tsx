@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { formatPrice, getCollections, getProductsByCategory } from '@/lib/actions';
+import { getCollections, getProductsByCategory } from '@/lib/actions';
 import Link from 'next/link';
 
 const Home = async () => {
@@ -10,9 +10,9 @@ const Home = async () => {
     const productsByThree = await getProductsByCategory('women');
 
     return (
-        <>
+        <div className='mx-auto max-w-screen-xl'>
             <Image src={'/banner.png'} alt='banner' width={2000} height={1000} />
-            <div className='pt-3 mt-3 border-t-2 border-gray-200 px-2'>
+            <div className='px-2'>
                 <h3 className='font-display text-xl font-semibold leading-6 md:text-[2rem] pb-3 pl-2.5 pt-1 md:pb-8 md:pl-0 md:pt-6 md:text-center'>
                     Shop By Categories
                 </h3>
@@ -52,6 +52,7 @@ const Home = async () => {
                                     className='h-full bg-gray-200 w-full transform transition-transform duration-300 ease-linear hover:scale-110 hover:shadow-md'
                                     src={item?.thumbnail}
                                     fill
+                                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                                     alt={item?.title}
                                 />
                                 <small className='absolute bottom-4 right-2 bg-white px-2 py-0 rounded text-grey-1'>
@@ -84,6 +85,7 @@ const Home = async () => {
                                 <Image
                                     className='h-full bg-gray-200 w-full transform transition-transform duration-300 ease-linear hover:scale-110 hover:shadow-md'
                                     src={item?.thumbnail}
+                                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                                     fill
                                     alt={item?.title}
                                 />
@@ -118,6 +120,8 @@ const Home = async () => {
                                     className='h-full bg-gray-200 w-full transform transition-transform duration-300 ease-linear hover:scale-110 hover:shadow-md'
                                     src={item?.thumbnail}
                                     fill
+                                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                                    placeholder='empty'
                                     alt={item?.title}
                                 />
                                 <small className='absolute bottom-4 right-2 bg-white px-2 py-0 rounded text-grey-1'>
@@ -135,7 +139,7 @@ const Home = async () => {
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
