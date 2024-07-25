@@ -7,8 +7,9 @@ import Pagination from '@/utils/Pagination';
 interface ProductProps {
     products: ProductType[];
     limit: number;
-    skip: number;
-    totals: number;
+    currentPage: number;
+    totalPage: number;
+    totalProduct: number;
 }
 interface UserTypeProps {
     users: UserType;
@@ -17,9 +18,10 @@ interface UserTypeProps {
 const sortItem = ['title', 'category', 'price', 'discount', 'rating'];
 
 const ProductList = ({ users }: UserTypeProps) => {
-    const [product, setProduct] = useState<ProductProps>();
+    const [data, setData] = useState<ProductProps>();
     const [sortBy, setSortBy] = useState('title');
-    const [skip, setSkip] = useState(0);
+    const [limit, setLimit] = useState(20);
+    const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -27,10 +29,10 @@ const ProductList = ({ users }: UserTypeProps) => {
             try {
                 setLoading(true);
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/products?limit=20&skip=${skip}&sortBy=${sortBy}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=${sortBy}&page=${page}&limit=${limit}`
                 );
-                const data = await res.json();
-                setProduct(data);
+                const products = await res.json();
+                setData(products);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -38,9 +40,9 @@ const ProductList = ({ users }: UserTypeProps) => {
             }
         };
         fetchProductWithQuery();
-    }, [skip, sortBy]);
+    }, [sortBy, page, limit]);
 
-    const handleSetSkip = (page: number) => setSkip(page);
+    console.log(data);
 
     return (
         <div className='py-8'>
@@ -58,34 +60,51 @@ const ProductList = ({ users }: UserTypeProps) => {
             </div>
 
             <hr className='border-b my-4' />
-            <p className='text-center py-4'>
-                (Showing {skip + 1} – 20 products of {product?.totals} products)
-            </p>
-            <Pagination
-                limit={20}
-                skip={skip}
-                totalProducts={product?.totals || 10}
-                onPageChange={handleSetSkip}
-            />
-            <hr className='border-b my-5' />
+
             {loading ? (
                 <h2 className='py-10 text-body-bold text-center'>Loading...</h2>
-            ) : !product || product?.products.length === 0 ? (
+            ) : !data || data?.products.length === 0 ? (
                 <p className='text-heading2-bold text-center py-10'>No products found</p>
             ) : (
-                <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 md:gap-4 px-2'>
-                    {product?.products?.map((product) => (
-                        <ProductCard
-                            key={product?._id}
-                            product={product}
-                            isLikedProduct={
-                                users?.wishlist?.length
-                                    ? users?.wishlist?.includes(product?._id)
-                                    : false
-                            }
-                        />
-                    ))}
-                </div>
+                <>
+                    <p className='text-center py-4'>
+                        (Showing {data?.currentPage * limit - (limit - 1)} –{' '}
+                        {data?.currentPage * limit} product of totals {data?.totalProduct} products)
+                    </p>
+
+                    {/* pagination */}
+                    <section className='flex items-center justify-center flex-wrap gap-2'>
+                        {Array.from({ length: data?.totalPage || 4 }, (_, index) => {
+                            index += 1;
+                            return (
+                                <button
+                                    onClick={() => setPage(index)}
+                                    key={index}
+                                    className={`min-w-6 px-3 py-1 rounded-full hover:bg-blue-400 border ${
+                                        data?.currentPage === index ? 'bg-blue-600 text-white' : ''
+                                    }`}>
+                                    {index}
+                                </button>
+                            );
+                        })}
+                    </section>
+
+                    <hr className='border-b my-4' />
+
+                    <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 md:gap-4 px-2'>
+                        {data?.products?.map((product: ProductType) => (
+                            <ProductCard
+                                key={product?._id}
+                                product={product}
+                                isLikedProduct={
+                                    users?.wishlist?.length
+                                        ? users?.wishlist?.includes(product._id)
+                                        : false
+                                }
+                            />
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     );
