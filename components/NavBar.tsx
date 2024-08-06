@@ -4,13 +4,12 @@ import React from 'react';
 import { UserButton, useUser } from '@clerk/nextjs';
 import { CircleUserRound, Menu, ShoppingCart } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import SearchSection from './SearchSection';
 import useCart from '@/lib/useCart';
 import useDropdown from '@/utils/useDropdown';
-import LogoSvg from './LogoSvg';
+import LogoSvg from '../utils/LogoSvg';
 
 const NavBar = () => {
     const { user } = useUser();

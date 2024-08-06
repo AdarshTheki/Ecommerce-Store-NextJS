@@ -7,6 +7,7 @@ import { useUser } from '@clerk/nextjs';
 import { MinusCircle, PlusCircle, Trash2 } from 'lucide-react';
 
 import useCart from '@/lib/useCart';
+import AddressCard from '@/components/AddressCard';
 
 const CartPage = () => {
     const router = useRouter();
@@ -44,15 +45,15 @@ const CartPage = () => {
     };
 
     return (
-        <div className='flex gap-20 py-16 px-10 max-lg:flex-col max-sm:px-3 text-grey-1'>
-            <div className='w-2/3 max-lg:w-full'>
+        <div className='flex gap-5 flex-col py-16 sm:px-10 px-3 max-w-screen-lg mx-auto text-grey-1'>
+            <div className='w-full'>
                 <p className='text-heading3-bold'>Shopping Cart</p>
                 <hr className='my-6' />
 
                 {cart.cartItems.map((cartItem, index) => (
                     <div
                         key={index}
-                        className='w-full flex max-sm:flex-col rounded-lg max-sm:gap-3 hover:bg-grey-3 px-4 py-3 items-center max-sm:items-start justify-between'>
+                        className='w-full flex max-sm:flex-col rounded-lg max-sm:gap-3 hover:bg-gray-300 px-4 py-3 items-center max-sm:items-start justify-between'>
                         <div className='flex items-center'>
                             <Image
                                 src={cartItem.item.media[0] || '/placeholder.jpg'}
@@ -93,7 +94,7 @@ const CartPage = () => {
                 ))}
             </div>
 
-            <div className='w-1/3 max-lg:w-full flex flex-col gap-8 bg-grey-3 rounded-lg px-4 py-5'>
+            <div className='w-full flex flex-col gap-8 bg-gray-300 rounded-lg px-4 py-5'>
                 <p className='text-heading4-bold pb-4'>
                     Summary{' '}
                     <span>{`(${cart.cartItems.length} ${
@@ -110,6 +111,8 @@ const CartPage = () => {
                     Proceed to Checkout
                 </button>
             </div>
+            {/* Address Manage */}
+            <AddressCard />
         </div>
     );
 };

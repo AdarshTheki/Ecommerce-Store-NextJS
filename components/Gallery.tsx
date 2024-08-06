@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
-import Image from 'next/image';
 import React, { useState } from 'react';
 
 interface GalleryProps {
@@ -12,22 +12,16 @@ const Gallery: React.FC<GalleryProps> = ({ productMedia }) => {
 
     return (
         <div className='flex flex-col gap-3 max-w-[500px]'>
-            <Image
-                src={mainImage}
-                width={500}
-                height={500}
-                alt='product'
-                className='w-96 h-96 rounded-lg shadow-xl object-contain'
-            />
-            <div className='flex items-center justify-center gap-2 overflow-auto tailwind-scrollbar-hide'>
+            <div className='w-full max-w-[450px] bg-gray-100 overflow-hidden'>
+                <img src={mainImage} alt='main image' className='w-full object-contain' />
+            </div>
+            <div className='flex items-center justify-start gap-2 overflow-x-auto'>
                 {productMedia?.map((image, index) => (
-                    <Image
+                    <img
                         key={index}
-                        src={image || '/placeholder.jpg'}
-                        height={200}
-                        width={200}
-                        alt='product'
-                        className={`w-20 h-20 rounded-lg object-contain cursor-pointer ${
+                        src={image}
+                        alt={image}
+                        className={`w-20 h-20 rounded-lg object-contain bg-gray-100 cursor-pointer ${
                             mainImage === image ? 'border-2 border-grey-1' : ''
                         }`}
                         onClick={() => setMainImage(image)}
