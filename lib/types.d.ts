@@ -45,3 +45,30 @@ type OrderItemType = {
     quantity: number;
     _id: string;
 };
+
+type AddressType = {
+    _id: string;
+    userId: string;
+    name: string;
+    phone: string;
+    postalCode?: number;
+    locality?: string;
+    address?: string;
+    addressType?: 'home' | 'work';
+    city?: string;
+    landmark?: string;
+    alternatePhone?: string;
+};
+
+type ReviewType = {
+    _id: string;
+    userId?: {
+        _id: string;
+        name: string;
+    };
+    productId: string;
+    comment: string;
+    rating: number;
+    createdAt: Date;
+    updatedAt: Date;
+};

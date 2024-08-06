@@ -1,7 +1,7 @@
-import User from '@/lib/User.model';
+import User from '@/models/User.model';
 import { connectToDB } from '@/lib/mongoDB';
 
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (req: NextRequest) => {
@@ -18,7 +18,8 @@ export const POST = async (req: NextRequest) => {
 
         // When the user sign-in for the 1st, immediately we will create a new user for them
         if (!user && userId.includes('user_')) {
-            user = new User({ clerkId: userId });
+            const clerkUser = await clerkClient.users.getUser(userId);
+            user = new User({ clerkId: userId, name: clerkUser.fullName });
             await user.save();
         }
 
