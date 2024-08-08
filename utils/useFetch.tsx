@@ -1,10 +1,9 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 
 const useFetch = (url: string, options?: RequestInit) => {
-    const [data, setData] = useState<any>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [data, setData] = useState<any>();
+    const [error, setError] = useState<string | null>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -18,7 +17,7 @@ const useFetch = (url: string, options?: RequestInit) => {
                     setData(item);
                 }
             } catch (err: any) {
-                setError(err.message || err.message || 'Unknown error');
+                setError(err.message || 'Unknown error fetch data');
                 setData(null);
             } finally {
                 setIsLoading(false);

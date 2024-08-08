@@ -62,7 +62,7 @@ type AddressType = {
 
 type ReviewType = {
     _id: string;
-    userId?: {
+    userDetails: {
         _id: string;
         name: string;
     };

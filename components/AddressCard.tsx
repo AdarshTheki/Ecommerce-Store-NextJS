@@ -32,7 +32,7 @@ export default function AddressCard() {
                 <Plus />
             </button>
             {loading && <h2 className='text-center py-5'>Address Loading...</h2>}
-            {data && data.map((item) => <Card {...item} key={item._id} />)}
+            {data.length && data?.map((item) => <Card {...item} key={item._id} />)}
         </>
     );
 }

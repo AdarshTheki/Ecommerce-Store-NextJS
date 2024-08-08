@@ -3,14 +3,13 @@ import { connectToDB } from '@/lib/mongoDB';
 
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
+import { configHeaders } from '@/lib/constant';
 
 export const POST = async (req: NextRequest) => {
     try {
         const { userId } = auth();
 
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
+        if (!userId) throw Error('[wishlist_POST] Un-Authorize user ! please login');
 
         await connectToDB();
 
@@ -25,9 +24,7 @@ export const POST = async (req: NextRequest) => {
 
         const { productId } = await req.json();
 
-        if (!productId) {
-            return new NextResponse('Product Id required', { status: 400 });
-        }
+        if (!productId) throw Error('Product ID required');
 
         const isLiked = user.wishlist.includes(productId);
 
@@ -41,10 +38,9 @@ export const POST = async (req: NextRequest) => {
 
         await user.save();
 
-        return NextResponse.json(user, {
-            status: 200,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-        });
+        if (!user) throw Error('[wishlist_POST] user not updated on database');
+
+        return NextResponse.json(user, configHeaders);
     } catch (err) {
         console.log('[wishlist_POST]', err);
         return new NextResponse('Internal Server Error', { status: 500 });

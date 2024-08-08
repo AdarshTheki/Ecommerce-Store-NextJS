@@ -4,107 +4,134 @@ import User from '@/models/User.model';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
+import { isValidObjectId } from 'mongoose';
+import { configHeaders } from '@/lib/constant';
 
 export const GET = async (req: NextRequest, { params: { id } }: { params: { id: string } }) => {
     try {
+        if (!isValidObjectId(id)) throw Error('[review_id_GET] : productId is not valid');
+
         await connectToDB();
 
-        const productReview = await Review.find({ productId: id }).populate({
-            path: 'userId',
-            select: 'name',
-        });
+        const productReview = await Review.find([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userDetails',
+                },
+            },
+            { $unwind: '$userDetails' },
+            {
+                $match: {
+                    productId: id,
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    productId: 1,
+                    comment: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    rating: 1,
+                    'userDetails._id': 1,
+                    'userDetails.name': 1,
+                },
+            },
+        ]);
 
-        return NextResponse.json(productReview, {
-            status: 200,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-        });
+        return NextResponse.json(productReview, configHeaders);
     } catch (err: any) {
-        console.log('[review_by_productId_GET]', err?.message);
-        return new NextResponse('review_by_productId_GET: Internal Server Error', { status: 500 });
+        console.log(err?.message);
+        return NextResponse.json(
+            { message: err?.message || 'Internal Server Error' },
+            { status: 500 }
+        );
     }
 };
 
 export const POST = async (req: NextRequest, { params: { id } }: { params: { id: string } }) => {
     try {
+        if (!isValidObjectId(id)) throw Error('[review_id_GET] : productId is not valid');
+
         const { userId } = auth();
 
-        if (!userId) {
-            return new NextResponse(JSON.stringify({ message: 'Unauthorized User' }), {
-                status: 401,
-            });
-        }
+        if (!userId) throw Error('[review_id_POST] user is not find');
 
         const { comment, rating } = await req.json();
 
-        if (!rating || !comment) {
-            return NextResponse.json({ error: 'Invalid Data' }, { status: 401 });
-        }
+        if (!rating || !comment) throw Error('[review_id] invalid data of "comment" or "rating"');
 
         await connectToDB();
 
         const user = await User.findOne({ clerkId: userId });
-        if (!user) {
-            return new NextResponse(JSON.stringify({ message: 'Unauthorized User' }), {
-                status: 401,
-            });
-        }
+        if (!user) throw Error('[review_id_POST] user not founded on database');
 
-        const newReview = await Review.create({
+        const newReview = new Review({
             userId: user._id,
             productId: id,
             comment,
             rating,
         });
 
-        return NextResponse.json(newReview, {
-            status: 202,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-        });
-    } catch (err) {
-        console.log('[review_POST]', err);
-        return new NextResponse('Internal Server Error', { status: 500 });
+        await newReview.save();
+
+        if (!newReview) throw Error('[review_id_POST] review not created');
+
+        return NextResponse.json(newReview, configHeaders);
+    } catch (err: any) {
+        console.log(err?.message);
+        return NextResponse.json(
+            { message: err?.message || 'Internal Server Error' },
+            { status: 500 }
+        );
     }
 };
 
 export const PATCH = async (req: NextRequest, { params: { id } }: { params: { id: string } }) => {
     try {
+        if (!isValidObjectId(id)) throw Error('[review_id_PATCH] reviewId is not valid');
+
         const { comment, rating } = await req.json();
 
-        if (!comment || !rating) {
-            return NextResponse.json({ error: 'Invalid Data' }, { status: 401 });
-        }
+        if (!comment || !rating)
+            throw Error('[review_id_PATCH] invalid data on "comment" or "rating"');
 
         await connectToDB();
 
         const updateReview = await Review.findByIdAndUpdate(id, { comment, rating }, { new: true });
 
-        return NextResponse.json(updateReview, {
-            status: 201,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-        });
-    } catch (err) {
-        console.log('[review_POST]', err);
-        return new NextResponse('Internal Server Error', { status: 500 });
+        if (!updateReview) throw Error('[review_id_PATCH] review not updated properly');
+
+        return NextResponse.json(updateReview, configHeaders);
+    } catch (err: any) {
+        console.log(err.message);
+        return NextResponse.json(
+            { message: err.message || 'Internal Server Error' },
+            { status: 500 }
+        );
     }
 };
 
 export const DELETE = async (req: NextRequest, { params: { id } }: { params: { id: string } }) => {
     try {
-        const { userId } = auth();
-        if (!userId) {
-            return new NextResponse(JSON.stringify({ message: 'Unauthorized User' }), {
-                status: 401,
-            });
-        }
+        if (!isValidObjectId(id)) throw Error('[review_id_DELETE] reviewId is not valid');
 
         await connectToDB();
 
         const data = await Review.findByIdAndDelete(id);
 
-        return NextResponse.json(data, { status: 200 });
+        if (!data) throw Error('[review_id_DELETE] review not deleted properly');
+
+        return NextResponse.json(data, configHeaders);
     } catch (err: any) {
-        console.log('[review_DELETE]', err?.message);
-        return new NextResponse('Internal Server Error', { status: 500 });
+        console.log(err?.message);
+        return NextResponse.json(
+            { message: err.message || 'Internal Server Error' },
+            { status: 500 }
+        );
     }
 };
 

@@ -3,7 +3,7 @@
 import { useUser } from '@clerk/nextjs';
 import { Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export interface HeartFavoriteProps {
@@ -44,15 +44,17 @@ const HeartFavorite: React.FC<HeartFavoriteProps> = ({ product, isLikedProduct }
     };
 
     return (
-        <button onClick={handleLike}>
-            {loading ? (
-                <div className='flex items-center justify-center'>
-                    <div className='animate-spin rounded-full border-t-2 border-blue-1 border-solid h-5 w-5'></div>
-                </div>
-            ) : (
-                <Heart fill={`${isLiked ? 'red' : 'white'}`} stroke='red' />
-            )}
-        </button>
+        <Suspense fallback={<>loading...</>}>
+            <button onClick={handleLike}>
+                {loading ? (
+                    <div className='flex items-center justify-center'>
+                        <div className='animate-spin rounded-full border-t-2 border-blue-1 border-solid h-5 w-5'></div>
+                    </div>
+                ) : (
+                    <Heart fill={`${isLiked ? 'red' : 'white'}`} stroke='red' />
+                )}
+            </button>
+        </Suspense>
     );
 };
 
