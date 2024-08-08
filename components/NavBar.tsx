@@ -2,9 +2,19 @@
 
 import React from 'react';
 import { UserButton, useUser } from '@clerk/nextjs';
-import { CircleUserRound, Menu, ShoppingCart } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import {
+    CircleUserRound,
+    Menu,
+    ShoppingCart,
+    Home,
+    ShoppingBasket,
+    Heart,
+    Contact,
+    FileClock,
+    MessageCircle,
+} from 'lucide-react';
 
 import SearchSection from './SearchSection';
 import useCart from '@/lib/useCart';
@@ -19,101 +29,48 @@ const NavBar = () => {
 
     return (
         <div className='sticky top-0 z-10 py-2 px-10 flex gap-2 text-base-medium text-gray-700 justify-between items-center bg-white max-sm:px-2'>
-            {/* Left Section */}
             <Link href='/'>
                 <LogoSvg />
             </Link>
 
-            {/* Center Section as Navigation Links Section */}
-            <div className='flex gap-4 max-lg:hidden'>
-                <Link href='/' className={`hover:text-red-1 ${pathname === '/' && 'text-red-1'}`}>
-                    Home
-                </Link>
-                <Link
-                    href='/products'
-                    className={`hover:text-red-1 ${pathname === '/products' && 'text-red-1'}`}>
-                    Products
-                </Link>
-                <Link
-                    href={user?.emailAddresses ? '/wishlist' : '/sign-in'}
-                    className={`hover:text-red-1 ${pathname === '/wishlist' && 'text-red-1'}`}>
-                    Wishlist
-                </Link>
-                <Link
-                    href={user?.emailAddresses ? '/orders' : '/sign-in'}
-                    className={`hover:text-red-1 ${pathname === '/orders' && 'text-red-1'}`}>
-                    Orders
-                </Link>
-                <Link
-                    href={'/contact'}
-                    className={`hover:text-red-1 ${pathname === '/contact' && 'text-red-1'}`}>
-                    Contact
-                </Link>
-            </div>
-
             {/* Right Section */}
-            <div className='relative flex items-center gap-5'>
-                {/* Search Products */}
+            <div className='flex items-center sm:gap-5 gap-2'>
                 <SearchSection />
 
-                {/* Shopping Cart */}
-                <Link href='/cart' className='flex items-center gap-2 max-md:hidden'>
-                    <ShoppingCart />
-                    <p className='text-base-bold'>
-                        Cart
-                        <sup className='bg-gray-900 rounded-full text-white font-bold px-1 py-0'>
-                            {cart.cartItems.length}
-                        </sup>
-                    </p>
-                </Link>
-
-                {/* Menu Open with 600px width  */}
-                <div className='relative'>
-                    <Menu className='cursor-pointer lg:hidden' onClick={toggle} />
-                    {isOpen && (
-                        <div ref={dropdownRef}>
-                            <div className='absolute -right-2 top-9 bg-white border shadow-2xl rounded-lg flex-col lg:hidden'>
-                                <div
-                                    className='flex flex-col text-center w-[200px]'
-                                    onClick={toggle}>
-                                    <Link
-                                        href='/'
-                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
-                                        Home
-                                    </Link>
-                                    <Link
-                                        href='/products'
-                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
-                                        Products
-                                    </Link>
-                                    <Link
+                <Menu className='cursor-pointer' onClick={toggle} />
+                {isOpen && (
+                    <div
+                        ref={dropdownRef}
+                        className='absolute text-base-medium w-[80vw] max-w-[400px] overflow-hidden sm:right-10 right-5 top-12 bg-white border shadow-2xl rounded-2xl'>
+                        <div className='flex z-50 flex-col'>
+                            {/* <Link
                                         href={user?.emailAddresses ? '/wishlist' : '/sign-in'}
-                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
+                                        className='hover:text-red-1 hover:bg-gray-200 p-5'>
                                         Wishlist
-                                    </Link>
+                                    </Link> */}
+                            {navLinks.map((link) => {
+                                return (
                                     <Link
-                                        href={user?.emailAddresses ? '/orders' : '/sign-in'}
-                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
-                                        Orders
+                                        onClick={toggle}
+                                        href={
+                                            ['wishlist', 'orders', 'cart', 'comment'].includes(
+                                                link.name
+                                            )
+                                                ? user?.emailAddresses
+                                                    ? link.href
+                                                    : '/sign-in'
+                                                : link.href
+                                        }
+                                        key={link.name}
+                                        className='hover:text-red-1 flex items-center gap-4 hover:bg-gray-200 capitalize py-3 border-b'>
+                                        <span className='pl-10'>{link.icon}</span>
+                                        {link.name}
                                     </Link>
-                                    <Link
-                                        href={'/contact'}
-                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
-                                        Contact
-                                    </Link>
-                                    <Link
-                                        href='/cart'
-                                        className='hover:text-red-1 hover:bg-gray-200 py-2'>
-                                        Cart
-                                        <sup className='bg-gray-900 rounded-full text-white font-bold px-1 py-0'>
-                                            {cart.cartItems.length}
-                                        </sup>
-                                    </Link>
-                                </div>
-                            </div>
+                                );
+                            })}
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
 
                 {/* User Section */}
                 <div>
@@ -131,3 +88,13 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
+const navLinks = [
+    { href: '/', icon: <Home />, name: 'home' },
+    { href: '/products', icon: <ShoppingBasket />, name: 'products' },
+    { href: '/contact', icon: <Contact />, name: 'contact' },
+    { href: '/cart', icon: <ShoppingCart />, name: 'cart' },
+    { href: '/wishlist', icon: <Heart />, name: 'wishlist' },
+    { href: '/orders', icon: <FileClock />, name: 'orders' },
+    { href: '/reviews', icon: <MessageCircle />, name: 'comment' },
+];

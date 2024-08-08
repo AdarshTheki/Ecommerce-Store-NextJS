@@ -12,8 +12,10 @@ export const getCollectionDetail = async (collectionId: string) => {
     return await collections.json();
 };
 
-export const getProducts = async () => {
-    const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
+export const getProducts = async (page?: number, limit?: number, sortBy?: string) => {
+    const products = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=${sortBy}&page=${page}&limit=${limit}`
+    );
     return await products.json();
 };
 
@@ -48,22 +50,4 @@ export const fetchReview = async (productId: string) => {
 export const getUser = async () => {
     const user = await fetch(`${process.env.NEXT_PUBLIC_STORE_URL}/users`);
     return await user.json();
-};
-
-// Constant functions:
-
-export const formatDate = (date: Date): string => {
-    return new Intl.DateTimeFormat('en-US', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric',
-    }).format(date);
-};
-
-export const formatPrice = (price: number) => {
-    price.toLocaleString('en-US', {
-        maximumFractionDigits: 0,
-        style: 'currency',
-        currency: 'USD',
-    });
 };

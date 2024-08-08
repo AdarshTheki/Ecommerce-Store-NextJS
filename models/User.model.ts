@@ -5,14 +5,15 @@ const userSchema = new mongoose.Schema(
         clerkId: {
             type: String,
             unique: true,
-            required: [true, 'Un-Authorize user, Please try again to login'],
+            required: true,
         },
-        name: { type: String },
+        name: String,
+        email: String,
+        address: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Address',
+        },
         wishlist: {
-            type: Array,
-            default: [],
-        },
-        review: {
             type: Array,
             default: [],
         },
