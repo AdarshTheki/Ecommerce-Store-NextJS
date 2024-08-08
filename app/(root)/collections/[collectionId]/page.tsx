@@ -1,18 +1,10 @@
-'use client';
-
 import Image from 'next/image';
 import ProductCard from '@/components/ProductCard';
-import useFetch from '@/utils/useFetch';
-import Loader from '@/utils/Loader';
 
-const CollectionDetail = ({ params }: { params: { collectionId: string } }) => {
-    const { isLoading, data, error } = useFetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/collections/${params.collectionId}`
-    );
-
-    if (isLoading) return <Loader text='Loaded data! Please wait...' />;
-
-    if (error) return <Loader text='Something was wrong! Please try again ?' />;
+const CollectionDetail = async ({ params }: { params: { collectionId: string } }) => {
+    const data = await (
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/collections/${params.collectionId}`)
+    ).json();
 
     return (
         <div className='sm:px-10 px-2 py-5 flex flex-col items-center gap-8'>

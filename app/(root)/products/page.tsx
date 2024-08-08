@@ -1,23 +1,30 @@
-'use client';
-
 import ProductList from '@/components/ProductList';
-import Loader from '@/utils/Loader';
-import useFetch from '@/utils/useFetch';
+import { getProducts } from '@/lib/actions';
+import { Suspense } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
-const ProductPage = () => {
-    const { isLoading, data, error } = useFetch('/api/users');
-
-    if (isLoading) return <Loader text='Loaded data! Please wait...' />;
-
-    if (error) return <Loader text='Something was wrong! Please try again?' />;
-
+export const loading = async () => {
     return (
-        <div>
-            <ProductList users={data} />
+        <div className='grid grid-cols-2 px-3 py-10 mx-auto max-w-[1000px] sm:grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 md:gap-4'>
+            {Array.from({ length: 20 }, (_, index) => (
+                <div className='space-y-2 rounded-lg overflow-hidden' key={index}>
+                    <Skeleton height={200} />
+                    <Skeleton height={50} />
+                </div>
+            ))}
         </div>
     );
 };
 
-export const dynamic = 'force-dynamic';
-
-export default ProductPage;
+export default async function Page() {
+    try {
+        const product = await getProducts(1, 100);
+        return (
+            <Suspense fallback={loading()}>
+                <ProductList productData={product?.products} />
+            </Suspense>
+        );
+    } catch (err) {
+        return <>{loading()}</>;
+    }
+}
