@@ -1,6 +1,7 @@
 import Address from '@/models/Address.model';
 import { connectToDB } from '@/lib/mongoDB';
 import { NextRequest, NextResponse } from 'next/server';
+import { configHeaders } from '@/lib/constant';
 
 export const POST = async (req: NextRequest, { params }: { params: { id: string } }) => {
     try {
@@ -13,11 +14,9 @@ export const POST = async (req: NextRequest, { params }: { params: { id: string 
             { ...newAddress },
             { new: true }
         );
+        if (!updateAddress) throw Error('[address_id_POST] address not updated on database');
 
-        return NextResponse.json(updateAddress, {
-            status: 200,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-        });
+        return NextResponse.json(updateAddress, configHeaders);
     } catch (err) {
         console.log('[wishlist_POST]', err);
         return new NextResponse('Internal Server Error', { status: 500 });
@@ -28,15 +27,10 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: strin
     try {
         await connectToDB();
 
-        await Address.findByIdAndDelete(params.id);
+        const deleteAddress = await Address.findByIdAndDelete(params.id);
+        if (!deleteAddress) throw Error('[address_id_DELETE] address not deleted on database');
 
-        return NextResponse.json(
-            { message: 'Address deleted success' },
-            {
-                status: 200,
-                headers: { 'Access-Control-Allow-Origin': '*' },
-            }
-        );
+        return NextResponse.json(deleteAddress, configHeaders);
     } catch (err) {
         console.log('[wishlist_DELETE]', err);
         return new NextResponse('Internal Server Error', { status: 500 });

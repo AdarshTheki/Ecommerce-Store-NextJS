@@ -3,6 +3,7 @@ import { connectToDB } from '@/lib/mongoDB';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 
 import { NextRequest, NextResponse } from 'next/server';
+import { configHeaders } from '@/lib/constant';
 
 export const GET = async (req: NextRequest) => {
     try {
@@ -26,10 +27,7 @@ export const GET = async (req: NextRequest) => {
             await user.save();
         }
 
-        return NextResponse.json(user, {
-            status: 200,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-        });
+        return NextResponse.json(user, configHeaders);
     } catch (err) {
         console.log('[users_GET]', err);
         return new NextResponse('Internal Server Error', { status: 500 });
